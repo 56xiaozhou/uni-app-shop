@@ -9,5 +9,5 @@ declare module 'vue' {
   }
 }
 
-export type MySwiperInstance = InstanceType<typeof MySwiper>
+// 组件实例类型
 export type MyGuessInstance = InstanceType<typeof MyGuess>
