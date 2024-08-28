@@ -53,7 +53,11 @@ const onRefresherRefresh = async () => {
   // await getHomeBannerData()
   // await getHomeCategoryData()
   // await getHomeHotData()
+  // 重置猜你喜欢组件的数据
+  guessRef.value?.resetData()
   await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  // 重新获取猜你喜欢组件的数据
+  guessRef.value?.getMore()
   // 关闭动画
   isTriggered.value = false
 }
