@@ -42,6 +42,22 @@ const onScrollToLower = () => {
   guessRef.value?.getMore()
 }
 
+const isTriggered = ref(false)
+
+// 自定义下拉刷新触发
+const onRefresherRefresh = async () => {
+  // console.log(11)
+  // 开始动画
+  isTriggered.value = true
+  // 加载数据
+  // await getHomeBannerData()
+  // await getHomeCategoryData()
+  // await getHomeHotData()
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  // 关闭动画
+  isTriggered.value = false
+}
+
 // 页面加载
 onLoad(() => {
   getHomeBannerData()
@@ -54,7 +70,14 @@ onLoad(() => {
   <!-- 自定义导航栏 -->
   <CustomNavbar />
   <!-- 可滚动视图区域 -->
-  <scroll-view class="scroll-view" scroll-y @scrolltolower="onScrollToLower">
+  <scroll-view
+    class="scroll-view"
+    scroll-y
+    refresher-enabled
+    :refresher-triggered="isTriggered"
+    @scrolltolower="onScrollToLower"
+    @refresherrefresh="onRefresherRefresh"
+  >
     <!-- 自定义轮播图 -->
     <MySwiper :list="bannerList" />
     <!-- 分类面板 -->
