@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import CustomNavbar from '@/pages/index/components/CustomNavbar.vue'
-import MySwiper from '@/components/MySwiper.vue'
 import CategoryPanel from '@/pages/index/components/CategoryPanel.vue'
 import HotPanel from '@/pages/index/components/HotPanel.vue'
 import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/home'
@@ -48,6 +47,8 @@ onLoad(() => {
   <CategoryPanel :list="categoryList" />
   <!-- 热门推荐 -->
   <HotPanel :list="hotList" />
+  <!-- 猜你喜欢-->
+  <MyGuess />
   <view class="index">index</view>
 </template>
 
