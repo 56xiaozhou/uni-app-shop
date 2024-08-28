@@ -16,7 +16,7 @@
 更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
 -->
 <template name="skeleton">
-  <view is="components/MySwiper">
+  <view style="height: 140px" is="components/MySwiper">
     <view class="carousel MySwiper--carousel">
       <swiper :circular="true" :interval="3000" :current="0" :autoplay="false">
         <swiper-item
