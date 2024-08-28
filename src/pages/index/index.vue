@@ -2,19 +2,27 @@
 import CustomNavbar from '@/pages/index/components/CustomNavbar.vue'
 import MySwiper from '@/components/MySwiper.vue'
 import CategoryPanel from '@/pages/index/components/CategoryPanel.vue'
-import { getHomeBannerAPI } from '@/services/home'
+import { getHomeBannerAPI, getHomeCategoryAPI } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { BannerItem } from '@/types/home'
 
+// 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
   bannerList.value = res.result
 }
 
+// 获取前台分类数据
+const getHomeCategoryData = async () => {
+  const res = await getHomeCategoryAPI()
+}
+
+// 页面加载
 onLoad(() => {
   getHomeBannerData()
+  getHomeCategoryData()
 })
 </script>
 
