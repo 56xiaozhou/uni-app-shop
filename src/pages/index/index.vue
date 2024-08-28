@@ -4,6 +4,7 @@ import MySwiper from '@/components/MySwiper.vue'
 import CategoryPanel from '@/pages/index/components/CategoryPanel.vue'
 import HotPanel from '@/pages/index/components/HotPanel.vue'
 import MyGuess from '@/components/MyGuess.vue'
+import PageSkeleton from '@/pages/index/components/PageSkeleton.vue'
 
 import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
@@ -62,11 +63,14 @@ const onRefresherRefresh = async () => {
   isTriggered.value = false
 }
 
+// 是否加载中-标记
+const isLoading = ref(false)
+
 // 页面加载
-onLoad(() => {
-  getHomeBannerData()
-  getHomeCategoryData()
-  getHomeHotData()
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  isLoading.value = false
 })
 </script>
 
@@ -82,14 +86,18 @@ onLoad(() => {
     @scrolltolower="onScrollToLower"
     @refresherrefresh="onRefresherRefresh"
   >
-    <!-- 自定义轮播图 -->
-    <MySwiper :list="bannerList" />
-    <!-- 分类面板 -->
-    <CategoryPanel :list="categoryList" />
-    <!-- 热门推荐 -->
-    <HotPanel :list="hotList" />
-    <!-- 猜你喜欢-->
-    <MyGuess ref="guessRef" />
+    <!-- 骨架屏 -->
+    <PageSkeleton v-if="isLoading" />
+    <template v-else>
+      <!-- 自定义轮播图 -->
+      <MySwiper :list="bannerList" />
+      <!-- 分类面板 -->
+      <CategoryPanel :list="categoryList" />
+      <!-- 热门推荐 -->
+      <HotPanel :list="hotList" />
+      <!-- 猜你喜欢-->
+      <MyGuess ref="guessRef" />
+    </template>
   </scroll-view>
 </template>
 
