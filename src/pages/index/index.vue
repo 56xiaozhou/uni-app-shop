@@ -2,10 +2,11 @@
 import CustomNavbar from '@/pages/index/components/CustomNavbar.vue'
 import MySwiper from '@/components/MySwiper.vue'
 import CategoryPanel from '@/pages/index/components/CategoryPanel.vue'
-import { getHomeBannerAPI, getHomeCategoryAPI } from '@/services/home'
+import HotPanel from '@/pages/index/components/HotPanel.vue'
+import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import type { BannerItem, CategoryItem } from '@/types/home'
+import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -22,10 +23,19 @@ const getHomeCategoryData = async () => {
   categoryList.value = res.result
 }
 
+// 获取热门推荐数据
+const hotList = ref<HotItem[]>([])
+// 获取热门推荐数据
+const getHomeHotData = async () => {
+  const res = await getHomeHotAPI()
+  hotList.value = res.result
+}
+
 // 页面加载
 onLoad(() => {
   getHomeBannerData()
   getHomeCategoryData()
+  getHomeHotData()
 })
 </script>
 
@@ -36,6 +46,8 @@ onLoad(() => {
   <MySwiper :list="bannerList" />
   <!-- 分类面板 -->
   <CategoryPanel :list="categoryList" />
+  <!-- 热门推荐 -->
+  <HotPanel :list="hotList" />
   <view class="index">index</view>
 </template>
 
