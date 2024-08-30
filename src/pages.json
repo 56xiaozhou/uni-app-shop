@@ -43,6 +43,14 @@
         "navigationBarTitleText": "登录"
       }
     }
+    ,
+    {
+  "path": "pages/hot/hot",
+  "style": {
+    "navigationBarTitleText": "热门推荐",
+    "enablePullDownRefresh": true
+  }
+}
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
