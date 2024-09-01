@@ -76,7 +76,7 @@ const memberStore = useMemberStore()
     </view>
     <!-- 猜你喜欢 -->
     <view class="guess">
-      <XtxGuess ref="guessRef" />
+      <MyGuess ref="guessRef" />
     </view>
   </scroll-view>
 </template>
