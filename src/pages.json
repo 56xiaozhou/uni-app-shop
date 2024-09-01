@@ -42,15 +42,21 @@
       "style": {
         "navigationBarTitleText": "登录"
       }
-    }
-    ,
+    },
     {
-  "path": "pages/hot/hot",
-  "style": {
-    "navigationBarTitleText": "热门推荐",
-    "enablePullDownRefresh": true
-  }
-}
+      "path": "pages/hot/hot",
+      "style": {
+        "navigationBarTitleText": "热门推荐",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/goods/goods",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "enablePullDownRefresh": true
+      }
+    }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
