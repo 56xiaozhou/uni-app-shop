@@ -10,7 +10,7 @@ import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
-import type { MyGuessInstance } from '@/components/components'
+import { useGuessList } from '@/composables'
 
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -35,13 +35,8 @@ const getHomeHotData = async () => {
   hotList.value = res.result
 }
 
-// 获取猜你喜欢组件实例
-const guessRef = ref<MyGuessInstance>()
-// 滚动触底
-const onScrollToLower = () => {
-  console.log('滚动触底啦')
-  guessRef.value?.getMore()
-}
+// 猜你喜欢组合式函数调用
+const { guessRef, onScrollToLower } = useGuessList()
 
 const isTriggered = ref(false)
 

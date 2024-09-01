@@ -1,7 +1,9 @@
 <script setup lang="ts">
-// 获取屏幕边界到安全区域距离
+import MyGuess from '@/components/MyGuess.vue'
 import { useMemberStore } from '@/stores'
+import { useGuessList } from '@/composables'
 
+// 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 // 订单选项
 const orderTypes = [
@@ -12,10 +14,13 @@ const orderTypes = [
 ]
 // 获取会员信息
 const memberStore = useMemberStore()
+
+// 猜你喜欢组合式函数调用
+const { guessRef, onScrollToLower } = useGuessList()
 </script>
 
 <template>
-  <scroll-view class="viewport" scroll-y enable-back-to-top>
+  <scroll-view class="viewport" scroll-y enable-back-to-top @scrolltolower="onScrollToLower">
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1：已登录 -->
