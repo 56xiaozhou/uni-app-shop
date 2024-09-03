@@ -120,6 +120,20 @@
             "navigationStyle": "custom",
             "navigationBarTextStyle": "white"
           }
+        },
+        {
+          "path": "address/address",
+          "style": {
+            "navigationBarTitleText": "地址管理",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "address-form/address-form",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": true
+          }
         }
       ]
     }
