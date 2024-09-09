@@ -7,7 +7,12 @@ import { onLoad } from '@dcloudio/uni-app'
 import AddressPanel from '@/pages/goods/components/AddressPanel.vue'
 import ServicePanel from '@/pages/goods/components/ServicePanel.vue'
 import PageSkeleton from '@/pages/goods/components/PageSkeleton.vue'
-import type { SkuPopupInstanceType, SkuPopupLocaldata } from '@/types/vk-data-goods-sku-popup'
+import type {
+  SkuPopupEvent,
+  SkuPopupInstanceType,
+  SkuPopupLocaldata,
+} from '@/types/vk-data-goods-sku-popup'
+import { postMemberCartAPI } from '@/services/cart'
 
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
@@ -103,6 +108,14 @@ const selectArrText = computed(() => {
   return skuPopupRef.value?.selectArr?.join(' ').trim() || '请选择商品规格'
 })
 
+// 加入购物车的事件
+const onAddCart = async (ev: SkuPopupEvent) => {
+  console.log(ev)
+  await postMemberCartAPI({ skuId: ev._id, count: ev.buy_num })
+  uni.showToast({ title: '添加成功' })
+  isShowSku.value = false
+}
+
 // 页面加载
 onLoad(async () => {
   await getGoodsByIdData()
@@ -123,6 +136,7 @@ onLoad(async () => {
       borderColor: '#27BA9B',
       backgroundColor: '#E9F8F5',
     }"
+    @add-cart="onAddCart"
   />
   <scroll-view v-if="isFinish">
     <scroll-view scroll-y class="viewport">
