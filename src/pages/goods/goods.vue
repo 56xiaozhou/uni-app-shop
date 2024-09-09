@@ -7,6 +7,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import AddressPanel from '@/pages/goods/components/AddressPanel.vue'
 import ServicePanel from '@/pages/goods/components/ServicePanel.vue'
 import PageSkeleton from '@/pages/goods/components/PageSkeleton.vue'
+import type { SkuPopupLocaldata } from '@/types/vk-data-goods-sku-popup'
 
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
@@ -21,6 +22,29 @@ const goods = ref<GoodsResult>({})
 const getGoodsByIdData = async () => {
   const res = await getGoodsByIdAPI(query.id)
   goods.value = res.result
+  // sku组件所需格式
+  localdata.value = {
+    _id: res.result.id,
+    name: res.result.name,
+    goods_thumb: res.result.mainPictures[0],
+    spec_list: res.result.specs.map((v) => {
+      return {
+        name: v.name,
+        list: v.values,
+      }
+    }),
+    sku_list: res.result.skus.map((v) => {
+      return {
+        _id: v.id,
+        goods_id: res.result.id,
+        goods_name: res.result.name,
+        image: v.picture,
+        price: v.price * 100,
+        sku_name_arr: v.specs.map((vv) => vv.valueName),
+        stock: v.inventory,
+      }
+    }),
+  }
 }
 
 // 轮播图变化时
@@ -53,6 +77,12 @@ const openPopup = (name: typeof popupName.value) => {
 }
 
 const isFinish = ref(false)
+
+// 是否显示sku组件
+const isShowSku = ref(false)
+// 商品信息
+const localdata = ref({} as SkuPopupLocaldata)
+
 // 页面加载
 onLoad(async () => {
   await getGoodsByIdData()
@@ -61,6 +91,7 @@ onLoad(async () => {
 </script>
 
 <template>
+  <vk-data-goods-sku-popup v-model="isShowSku" :localdata="localdata" />
   <scroll-view v-if="isFinish">
     <scroll-view scroll-y class="viewport">
       <!-- 基本信息 -->
@@ -91,7 +122,7 @@ onLoad(async () => {
 
         <!-- 操作面板 -->
         <view class="action">
-          <view class="item arrow">
+          <view class="item arrow" @tap="isShowSku = true">
             <text class="label">选择</text>
             <text class="text ellipsis"> 请选择商品规格 </text>
           </view>
