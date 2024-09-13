@@ -94,8 +94,15 @@ const gotoPayment = () => {
   uni.showToast({ title: '等待完成' })
 }
 
+// 购物车标识
+const isNormalCar = ref(false)
+// 安全距离
+const { safeAreaInsets } = uni.getSystemInfoSync()
+
 // 初始化调用：页面显示触发
 onShow(() => {
+  // 判断是tabBar购物车还是普通购物车
+  isNormalCar.value = getCurrentPages().length !== 1
   if (memberStore.profile) {
     getMemberCartData()
   }
@@ -166,7 +173,10 @@ onShow(() => {
         </navigator>
       </view>
       <!-- 吸底工具栏 -->
-      <view class="toolbar">
+      <view
+        class="toolbar"
+        :style="isNormalCar ? `padding-bottom: ${safeAreaInsets?.bottom}px` : ''"
+      >
         <text class="all" :class="{ checked: isSelectedAll }" @tap="onChangeSelectedAll">全选</text>
         <text class="text">合计:</text>
         <text class="amount">{{ selectedCartListMoney }}</text>
