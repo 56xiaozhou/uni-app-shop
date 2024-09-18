@@ -1,8 +1,42 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import type { AddressItem } from '@/types/address'
+import { getMemberAddressAPI } from '@/services/address'
+import { useAddressStore } from '@/stores/modules/address'
+
 // 子调父
 const emit = defineEmits<{
   (event: 'close'): void
 }>()
+
+// 获取收获地址列表数据
+const addressList = ref<AddressItem[]>([])
+const getMemberAddressData = async () => {
+  const res = await getMemberAddressAPI()
+  addressList.value = res.result
+}
+
+// 修改选中地址
+const addressStore = useAddressStore()
+const onChangeAddress = (val: AddressItem) => {
+  // 修改地址
+  addressStore.changeSelectedAddress(val)
+  // 关闭弹窗
+  emit('close')
+}
+
+// 计算选中的地址索引
+const selectedAddressIdx = computed(() => {
+  // 如果已有选中地址，则取当前选中地址的索引
+  if (addressStore.selectedAddress) {
+    return addressList.value.findIndex((v) => v.id === addressStore.selectedAddress?.id)
+  } else {
+    // 如没有选中地址，则取第一个（默认地址）
+    return 0
+  }
+})
+
+getMemberAddressData()
 </script>
 
 <template>
@@ -13,20 +47,15 @@ const emit = defineEmits<{
     <view class="title">配送至</view>
     <!-- 内容 -->
     <view class="content">
-      <view class="item">
-        <view class="user">李明 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-checked"></text>
-      </view>
-      <view class="item">
-        <view class="user">王东 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-ring"></text>
-      </view>
-      <view class="item">
-        <view class="user">张三 13824686868</view>
-        <view class="address">北京市朝阳区孙河安平北街6号院</view>
-        <text class="icon icon-ring"></text>
+      <view
+        class="item"
+        v-for="(item, idx) in addressList"
+        :key="item.id"
+        @tap="onChangeAddress(item)"
+      >
+        <view class="user">{{ item.receiver }} {{ item.contact }}</view>
+        <view class="address">{{ item.fullLocation }}{{ item.address }}</view>
+        <text class="icon" :class="{ 'icon-checked': idx === selectedAddressIdx }"></text>
       </view>
     </view>
     <view class="footer">
