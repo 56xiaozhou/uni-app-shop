@@ -152,6 +152,13 @@
             "navigationBarTitleText": "填写订单",
             "enablePullDownRefresh": true
           }
+        },
+        {
+          "path": "detail/detail",
+          "style": {
+            "navigationBarTitleText": "订单详情",
+            "enablePullDownRefresh": true
+          }
         }
       ]
     }
