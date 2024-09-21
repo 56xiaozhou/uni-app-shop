@@ -76,6 +76,12 @@ const getMemberOrderByIdData = async () => {
   order.value = res.result
 }
 
+// 倒计时结束事件
+const onTimeUp = () => {
+  // 修改订单状态为已取消
+  order.value!.orderState = OrderState.YiQuXiao
+}
+
 onLoad(() => {
   getMemberOrderByIdData()
 })
@@ -105,14 +111,21 @@ onLoad(() => {
           <view class="tips">
             <text class="money">应付金额: ¥ 99.00</text>
             <text class="time">支付剩余</text>
-            00 时 29 分 59 秒
+            <uni-countdown
+              :second="order.countdown"
+              color="#fff"
+              splitor-color="#fff"
+              :show-day="false"
+              :show-colon="false"
+              @timeup="onTimeUp"
+            ></uni-countdown>
           </view>
           <view class="button">去支付</view>
         </template>
         <!-- 其他订单状态:展示再次购买按钮 -->
         <template v-else>
           <!-- 订单状态文字 -->
-          <view class="status">{{ orderStateList[order.orderState] }}</view>
+          <view class="status">{{ orderStateList[order.orderState]?.text }}</view>
           <view class="button-group">
             <navigator
               class="button"
