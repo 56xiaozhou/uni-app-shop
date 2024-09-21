@@ -157,7 +157,8 @@
           "path": "detail/detail",
           "style": {
             "navigationBarTitleText": "订单详情",
-            "enablePullDownRefresh": true
+            "enablePullDownRefresh": true,
+            "navigationStyle": "custom"
           }
         }
       ]
