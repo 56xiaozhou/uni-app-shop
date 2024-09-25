@@ -11,6 +11,7 @@ import {
   getMemberOrderConsignmentByIdAPI,
   getPayMockAPI,
   getPayWxPayMiniPayAPI,
+  putMemberOrderReceiptByIdAPI,
 } from '@/services/pay'
 
 // 获取屏幕边界到安全区域距离
@@ -114,6 +115,21 @@ const onOrderSend = async () => {
   }
 }
 
+// 确认收货
+const onOrderConfirm = () => {
+  // 二次确认弹窗
+  uni.showModal({
+    content: '为保障您的权益，请收到货并确认无误后，再确认收货',
+    success: async (result) => {
+      if (result.confirm) {
+        const res = await putMemberOrderReceiptByIdAPI(query.id)
+        // 重新赋值，更新订单状态
+        order.value = res.result
+      }
+    },
+  })
+}
+
 onLoad(() => {
   getMemberOrderByIdData()
 })
@@ -173,7 +189,12 @@ onLoad(() => {
               @tap="onOrderSend"
               >模拟发货</view
             >
-            <view v-if="false" class="button"> 确认收货 </view>
+            <view
+              v-if="order.orderState === OrderState.DaiShouHuo"
+              class="button"
+              @tap="onOrderConfirm"
+              >确认收货</view
+            >
           </view>
         </template>
       </view>

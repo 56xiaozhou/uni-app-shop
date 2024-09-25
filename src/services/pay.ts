@@ -1,4 +1,5 @@
 import { http } from '@/utils/http'
+import type { OrderResult } from '@/types/order'
 
 /**
  * 获取微信支付参数
@@ -33,5 +34,17 @@ export const getMemberOrderConsignmentByIdAPI = (id: string) => {
   return http({
     method: 'GET',
     url: `/member/order/consignment/${id}`,
+  })
+}
+
+/**
+ * 确认收货
+ * @description 仅在订单状态为待收货时，可确认收货。
+ * @param id 订单id
+ */
+export const putMemberOrderReceiptByIdAPI = (id: string) => {
+  return http<OrderResult>({
+    method: 'PUT',
+    url: `/member/order/${id}/receipt`,
   })
 }
