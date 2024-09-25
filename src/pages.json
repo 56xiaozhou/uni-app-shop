@@ -167,6 +167,13 @@
             "navigationBarTitleText": "支付结果页",
             "enablePullDownRefresh": true
           }
+        },
+        {
+          "path": "list/list",
+          "style": {
+            "navigationBarTitleText": "订单列表",
+            "enablePullDownRefresh": true
+          }
         }
       ]
     }
